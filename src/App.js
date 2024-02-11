@@ -23,6 +23,7 @@ const blogData = [
 function App() {
   const [title, setTitle] = useState([]);
   const [likes, setLikes] = useState([]);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     const initialTitles = blogData.map((data) => data.title);
@@ -68,6 +69,13 @@ function App() {
     setTitle(sortedTitles); // 정렬된 제목으로 제목 상태를 업데이트
     setLikes(sortedLikes); // 정렬된 좋아요 수로 좋아요 상태를 업데이트
   }
+  const openModal = () => {
+    if (modal === true) {
+      setModal(false);
+    } else {
+      setModal(true);
+    }
+  };
 
   return (
     <div className="App">
@@ -77,22 +85,22 @@ function App() {
       <button onClick={handleSort}>정렬</button>
       {blogData?.map((data, index) => (
         <div className="list" key={index}>
-          <h4>
-            {title[index]}{" "}
-            <span
-              onClick={(event) => {
-                handleLike(event, index);
-              }}
-            >
-              좋아요👍
-            </span>{" "}
-            {likes[index]}
+          <h4 onClick={openModal}>
+            {title[index]}
             <button onClick={(e) => handleTitle(e, index)}>제목 변경</button>
           </h4>
+          <span
+            onClick={(event) => {
+              handleLike(event, index);
+            }}
+          >
+            좋아요👍
+          </span>{" "}
+          {likes[index]}
           <p>11</p>
         </div>
       ))}
-      <Modal />
+      {modal === true ? <Modal /> : null}
     </div>
   );
 }
