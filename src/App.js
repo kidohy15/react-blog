@@ -24,6 +24,7 @@ function App() {
   const [title, setTitle] = useState([]);
   const [likes, setLikes] = useState([]);
   const [modal, setModal] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const initialTitles = blogData.map((data) => data.title);
@@ -52,7 +53,11 @@ function App() {
 
   function handleTitle(e, index) {
     const title = "제목 수정";
+    console.log("index!!!!!!", index);
+    setIndex(index);
     setTitle((prevTitle) => {
+      console.log("prevTitle", prevTitle);
+      console.log("index", index);
       const newTitle = [...prevTitle];
       newTitle[index] = title;
       return newTitle;
@@ -69,10 +74,12 @@ function App() {
     setTitle(sortedTitles); // 정렬된 제목으로 제목 상태를 업데이트
     setLikes(sortedLikes); // 정렬된 좋아요 수로 좋아요 상태를 업데이트
   }
-  const openModal = () => {
+  const openModal = (index) => {
     if (modal === true) {
+      setIndex(index);
       setModal(false);
     } else {
+      setIndex(index);
       setModal(true);
     }
   };
@@ -81,11 +88,9 @@ function App() {
     <div className="App">
       <Nav />
 
-      {/* 제목 가나다 순 정렬 */}
-      <button onClick={handleSort}>정렬</button>
       {blogData?.map((data, index) => (
         <div className="list" key={index}>
-          <h4 onClick={openModal}>
+          <h4 onClick={() => openModal(index)}>
             {title[index]}
             <button onClick={(e) => handleTitle(e, index)}>제목 변경</button>
           </h4>
@@ -100,7 +105,21 @@ function App() {
           <p>11</p>
         </div>
       ))}
-      {modal === true ? <Modal /> : null}
+      {modal === true ? (
+        <Modal title={title} index={index} handleTitle={handleTitle} />
+      ) : null}
+
+      {/* 제목 가나다 순 정렬 */}
+      <button
+        style={{
+          width: "100px",
+          height: "50px",
+          margin: "50px",
+        }}
+        onClick={handleSort}
+      >
+        정렬
+      </button>
     </div>
   );
 }
