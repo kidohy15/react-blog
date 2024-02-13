@@ -66,6 +66,14 @@ function App() {
     });
   }
 
+  function handleDelete(e, index) {
+    console.log("index!!!!!!", index);
+    setIndex(index);
+    const result = blogData.filter((data) => data !== blogData[index])
+    console.log("result!!!!!!", result);
+    setBlogData(result);
+  }
+
   function handleSort() {
     const sortedTitles = [...title].sort(); // 가나다 순으로 정렬된 새로운 배열을 생성
     const sortedBlogData = sortedTitles.map((title) => {
@@ -104,6 +112,7 @@ function App() {
           <h4 onClick={() => openModal(index)}>
             {title[index]}
             <button onClick={(e) => handleTitle(e, index)}>제목 변경</button>
+            <button onClick={(e) => handleDelete(e, index)}>삭제하기</button>
           </h4>
           <span
             onClick={(event) => {
