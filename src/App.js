@@ -5,7 +5,7 @@ import Modal from "./components/Modal";
 import Nav from "./components/Nav";
 
 // const titleData = ["테스트 블로그1", "테스트 블로그2", "테스트 블로그3"];
-const blogData = [
+const data = [
   {
     title: "다 테스트 블로그1",
     like: 0,
@@ -21,10 +21,12 @@ const blogData = [
 ];
 
 function App() {
+  const [blogData, setBlogData] = useState(data);
   const [title, setTitle] = useState([]);
   const [likes, setLikes] = useState([]);
   const [modal, setModal] = useState(false);
   const [index, setIndex] = useState(0);
+  const [newTitle, setNewTitle] = useState("");
 
   useEffect(() => {
     const initialTitles = blogData.map((data) => data.title);
@@ -41,7 +43,7 @@ function App() {
     //   console.log("data.title!!!", data.title);
     //   // setTitle(data.like)
     // });
-  }, []);
+  }, [blogData]);
 
   function handleLike(e, index) {
     setLikes((prevLikes) => {
@@ -74,6 +76,7 @@ function App() {
     setTitle(sortedTitles); // 정렬된 제목으로 제목 상태를 업데이트
     setLikes(sortedLikes); // 정렬된 좋아요 수로 좋아요 상태를 업데이트
   }
+
   const openModal = (index) => {
     if (modal === true) {
       setIndex(index);
@@ -83,6 +86,14 @@ function App() {
       setModal(true);
     }
   };
+
+  function handleAddList() {
+    console.log("newTitle!!!", newTitle);
+    const addTitle = [{title:newTitle, like:0}, ...blogData];
+    console.log("newTitle!!!", addTitle);
+    setBlogData(addTitle);
+    // blogData = addTitle
+  }
 
   return (
     <div className="App">
@@ -109,17 +120,25 @@ function App() {
         <Modal title={title} index={index} handleTitle={handleTitle} />
       ) : null}
 
-      {/* 제목 가나다 순 정렬 */}
-      <button
-        style={{
-          width: "100px",
-          height: "50px",
-          margin: "50px",
-        }}
-        onClick={handleSort}
-      >
-        정렬
-      </button>
+      <div>
+        <input
+          onChange={(e) => {
+            setNewTitle(e.target.value);
+          }}
+        />
+        <button onClick={handleAddList}>추가</button>
+        {/* 제목 가나다 순 정렬 */}
+        <button
+          style={{
+            width: "100px",
+            height: "50px",
+            margin: "50px",
+          }}
+          onClick={handleSort}
+        >
+          정렬
+        </button>
+      </div>
     </div>
   );
 }
